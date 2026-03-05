@@ -7,7 +7,9 @@
   - [Create a non-root user](#create-a-non-root-user)
   - [Configure `ufw` firewall](#configure-ufw-firewall)
   - [Configure `fail2ban`](#configure-fail2ban)
-  - [Harden `SSH` config](#harden-ssh-config)
+  - [Disable root `SSH` login](#disable-root-ssh-login)
+  - [Disable password authentication](#disable-password-authentication)
+  - [Create the `autochecker` user](#create-the-autochecker-user)
   - [Restart `sshd`](#restart-sshd)
 
 ## What is VM hardening
@@ -22,15 +24,13 @@ Docs:
 
 ### Create a non-root user
 
-1. To connect to the VM as the [`root` user](./linux.md#the-root-user),
+1. To connect to the VM as root,
 
    [run in the `VS Code Terminal`](./vs-code.md#run-a-command-in-the-vs-code-terminal):
 
    ```terminal
-   ssh root@<your-vm-ip-address>
+   ssh root@<vm-ip>
    ```
-
-   Replace [`<your-vm-ip-address>`](./vm.md#your-vm-ip-address).
 
 2. To create a new user,
 
@@ -48,7 +48,7 @@ Docs:
    usermod -aG sudo <username>
    ```
 
-4. To set up [`SSH`](./ssh.md#what-is-ssh) key authentication for the new user,
+4. To copy your [`SSH`](./ssh.md#what-is-ssh) key to the new user,
 
    [run in the `VS Code Terminal`](./vs-code.md#run-a-command-in-the-vs-code-terminal):
 
@@ -65,20 +65,17 @@ Docs:
    [run in the `VS Code Terminal`](./vs-code.md#run-a-command-in-the-vs-code-terminal):
 
    ```terminal
-   ssh <username>@<your-vm-ip-address>
+   ssh <username>@<vm-ip>
    ```
 
-   Replace [`<your-vm-ip-address>`](./vm.md#your-vm-ip-address).
-
-6. Confirm the connection did not prompt for a password. If it did, repeat step 4.
-
-7. Disconnect from the root session and use the non-root user for all remaining steps.
+6. Disconnect from the root session and use the non-root user for all remaining steps.
 
 ### Configure `ufw` firewall
 
-`ufw` (`Uncomplicated Firewall`) is a simple firewall for [`Linux`](./linux.md#what-is-linux). By default, `ufw` denies all incoming traffic. The steps below create exceptions for the ports your VM needs.
+`ufw` (`Uncomplicated Firewall`) is a simple firewall for [`Linux`](./linux.md#what-is-linux).
 
-1. Find the [`<caddy-port>`](./caddy.md#caddy-port).
+1. Look up the value of `CADDY_HOST_PORT` in the `.env.docker.secret` file.
+   This is your [`<app-port>`](./placeholders.md#app-port).
 
 2. To allow [`SSH`](./ssh.md#what-is-ssh),
 
@@ -93,7 +90,7 @@ Docs:
    [run in the `VS Code Terminal`](./vs-code.md#run-a-command-in-the-vs-code-terminal):
 
    ```terminal
-   sudo ufw allow <caddy-port>
+   sudo ufw allow <api-port>
    ```
 
 4. To enable the firewall,
@@ -117,7 +114,7 @@ Docs:
 
 ### Configure `fail2ban`
 
-`fail2ban` blocks IP addresses that make too many failed login attempts. Even after password authentication is disabled, `fail2ban` remains useful: it rate-limits repeated `SSH` connection attempts and can be extended to protect other services.
+`fail2ban` blocks IP addresses that make too many failed login attempts.
 
 1. To update the package list,
 
@@ -159,7 +156,7 @@ Docs:
    sudo systemctl status fail2ban
    ```
 
-### Harden `SSH` config
+### Disable root `SSH` login
 
 1. To open the [`SSH`](./ssh.md#what-is-ssh) config,
 
@@ -175,19 +172,36 @@ Docs:
    PermitRootLogin no
    ```
 
-3. Find the line `PasswordAuthentication` and set it to:
+3. Save and exit (`Ctrl+O`, `Enter`, `Ctrl+X`).
+
+> [!IMPORTANT]
+> Make sure you can `SSH` as a non-root user before disabling root login.
+
+### Disable password authentication
+
+1. To open the [`SSH`](./ssh.md#what-is-ssh) config,
+
+   [run in the `VS Code Terminal`](./vs-code.md#run-a-command-in-the-vs-code-terminal):
+
+   ```terminal
+   sudo nano /etc/ssh/sshd_config
+   ```
+
+2. Find the line `PasswordAuthentication` and set it to:
 
    ```text
    PasswordAuthentication no
    ```
 
-4. Save and exit (`Ctrl+O`, `Enter`, `Ctrl+X`).
-
-> [!IMPORTANT]
-> Make sure you can `SSH` as a non-root user before disabling root login.
+3. Save and exit (`Ctrl+O`, `Enter`, `Ctrl+X`).
 
 > [!IMPORTANT]
 > Make sure your `SSH` key is set up before disabling password authentication.
+
+### Create the `autochecker` user
+
+1. [Create the `autochecker` user](./vm-autochecker.md#create-the-autochecker-user).
+2. [Add the `SSH` public key to the `autochecker` user](./vm-autochecker.md#add-an-ssh-public-key-to-the-autochecker-user).
 
 ### Restart `sshd`
 
@@ -216,10 +230,8 @@ After changing the [`SSH`](./ssh.md#what-is-ssh) config, restart the `SSH` servi
    [run in the `VS Code Terminal`](./vs-code.md#run-a-command-in-the-vs-code-terminal):
 
    ```terminal
-   ssh <username>@<your-vm-ip-address>
+   ssh <username>@<vm-ip>
    ```
-
-   Replace [`<your-vm-ip-address>`](./vm.md#your-vm-ip-address).
 
 > [!IMPORTANT]
 > Keep your current `SSH` session open until you confirm the new connection works. If the new connection fails, use the existing session to fix the config.

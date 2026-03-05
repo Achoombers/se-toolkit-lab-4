@@ -8,12 +8,8 @@
 - [`pgAdmin`](#pgadmin)
 - [`SQL`](#sql)
 - [Database schema](#database-schema)
-- [Database row](#database-row)
-- [ERD](#erd)
-  - [ERD notations](#erd-notations)
-    - [ERD in Chen notation](#erd-in-chen-notation)
-    - [ERD in crow's foot notation](#erd-in-crows-foot-notation)
-- [EERD](#eerd)
+- [Resetting the database](#resetting-the-database)
+- [`<db-name>`](#db-name)
 
 ## What is a database
 
@@ -25,57 +21,40 @@ Databases store data in structures such as tables (rows and columns).
 
 A database server is software that manages one or more databases and handles queries from clients (applications).
 
-Examples of database servers: [`PostgreSQL`](./postgresql.md#postgresql-server), `MySQL`, `SQLite`.
+Examples of database servers: `PostgreSQL`, `MySQL`, `SQLite`.
 
 ## `PostgreSQL`
 
-[`PostgreSQL`](./postgresql.md#what-is-postgresql) is a popular open-source relational database server.
+`PostgreSQL` is a popular open-source relational database server.
 
 Docs:
 
 - [Official PostgreSQL docs](https://www.postgresql.org/docs/)
 
-<!-- TODO move to postgres.md -->
-<!-- TODO update docker-postgres to reference postgres.md -->
-
 ## `pgAdmin`
 
-See [`pgAdmin`](./pgadmin.md#what-is-pgadmin).
+See [`pgAdmin`](./pgadmin.md).
 
 ## `SQL`
 
-See [`SQL`](./sql.md#what-is-sql).
+See [`SQL`](./sql.md).
 
 ## Database schema
 
 The database schema defines the structure of the database: tables, columns, data types, and constraints.
 
-You can [inspect columns](./pgadmin.md#browse-columns-in-the-table) of a table in [`pgAdmin`](./pgadmin.md#what-is-pgadmin).
+You can [inspect columns](./pgadmin.md#inspect-columns) of a table in [`pgAdmin`](./pgadmin.md).
 
 > [!NOTE]
-> The column names in the database must match the field names in the [`Python`](./python.md#what-is-python) code.
+> The column names in the database must match the field names in the `Python` code.
 > If they don't match, the application will fail to read data from the database.
 
-## Database row
+## Resetting the database
 
-<!-- TODO -->
+See [`Resetting the database`](./docker-postgres.md#resetting-the-database).
 
-## ERD
+## `<db-name>`
 
-ERD (Entity-relationship diagram) is a visual representation of a data model.
+`<db-name>` is the name of the `PostgreSQL` database.
 
-<!-- TODO improve description -->
-
-### ERD notations
-
-#### ERD in Chen notation
-
-See [Chen notation](https://www.red-gate.com/blog/chen-erd-notation/).
-
-#### ERD in crow's foot notation
-
-See [Crow’s Foot Notation](https://www.red-gate.com/blog/crow-s-foot-notation/).
-
-## EERD
-
-<!-- TODO add section content -->
+It is set by the `POSTGRES_DB` variable in `.env.docker.secret` (default: `lab-4`).
