@@ -5,7 +5,6 @@
 - [Add the `LAB_TOKEN`](#add-the-lab_token)
 - [Get meeting transcript](#get-meeting-transcript)
 - [Get meeting report](#get-meeting-report)
-- [Enter the devshell](#enter-the-devshell)
 
 ## Add the `LAB_TOKEN`
 
@@ -55,7 +54,3 @@ Steps:
 
 1. In `Claude`, use the skill `/get-meeting-report <N> <M>` to get a report at `lab-design/lab-<N>/iteration-<M>/meeting-report.md` following the rules in [`meeting-report-prompt.md`](./context/meeting-report/meeting-report-prompt.md).
 2. In `Claude`, use the skill `/review-meeting-report` to review the report against the transcript and other files discussed during the meeting.
-
-## Enter the devshell
-
-<!-- TODO link to setup -->
