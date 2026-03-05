@@ -22,6 +22,7 @@ def filter_by_max_item_id(
         return interactions
 
 
+
 @router.get("/", response_model=list[InteractionModel])
 async def get_interactions(
     max_item_id: int | None = None,
