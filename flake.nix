@@ -28,7 +28,7 @@
             '';
             commandGroups = {
               "1-front-tools" = [
-                pkgs.nodejs_25
+                pkgs.nodejs_22
               ];
               "2-back-tools" = [
                 pkgs.uv
@@ -44,7 +44,6 @@
                       --exclude-path '.venv' \
                       --exclude-path '.direnv' \
                       --exclude-path 'node_modules' \
-                      --exclude-path 'tmp' \
                       --root-dir . \
                       --cache \
                       --format json \
@@ -57,12 +56,7 @@
                   name = "lint-docs";
                   command = ''
                     ${pkgs.lib.getExe pkgs.markdownlint-cli2} \
-                      '**/*.md' \
-                      '#.direnv' \
-                      '#.venv' \
-                      '#**/node_modules' \
-                      '#*/skills' \
-                      '#tmp'
+                      '**/*.md' '#.direnv' '#.venv' '#node_modules'
                   '';
                   help = "Lint all Markdown files";
                 }
