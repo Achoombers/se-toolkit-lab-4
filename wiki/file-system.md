@@ -14,7 +14,6 @@
 - [Special paths](#special-paths)
   - [Root directory (`/`)](#root-directory-)
   - [Home directory (`~`)](#home-directory-)
-  - [Current directory (`.`)](#current-directory-)
   - [Parent directory (`..`)](#parent-directory-)
   - [`Desktop` directory](#desktop-directory)
   - [`<directory-path>`](#directory-path)
@@ -39,7 +38,7 @@ Files contain data such as text, code, images, or other content.
 
 The file name identifies the file within its [directory](#directory).
 
-Example: for the file [`wiki/file-system.md`](./file-system.md), the file name is `file-system.md`.
+Example: `README.md` has the file name `README.md`.
 
 ### Extension
 
@@ -50,19 +49,18 @@ Example: `README.md` has the extension `.md`.
 
 ### Location
 
-The location of a file is its containing [directory](#directory).
+The location of a file is the [path](#path) to its containing [directory](#directory).
 
-Example: for the file `/home/user/project/README.md`, the location is `/home/user/project/`.
+Example: for the file `/home/user/project/README.md`, the location is `/home/user/project`.
 
 ## Directory
 
-A directory (a.k.a. "folder" on `Windows`) is a special type of [file](#file) that contains other files and directories.
-
-Directories nest inside one another, forming a tree structure rooted at the [root directory](#root-directory-).
+A directory (a.k.a. "folder" on `Windows`) is a special type of file that contains other files and directories.
+Directories are nested inside one another, forming a tree structure rooted at the [root directory](#root-directory-).
 
 ## Path
 
-A path points to a [location](#location) in the [filesystem](#what-is-a-file-system).
+A path points to a location in the filesystem.
 
 ### Absolute path
 
@@ -70,8 +68,8 @@ Starts from the [root directory](#root-directory-) or the [home directory](#home
 
 Examples:
 
-1. `/home/inno-se-toolkit/Desktop/` (`Linux` / `macOS`)
-2. `C:/Users/inno-se-toolkit/Desktop/` (`Windows`)
+1. `/home/inno-se-toolkit/Desktop` (`Linux` / `macOS`)
+2. `C:\Users\inno-se-toolkit\Desktop` (`Windows`)
 
 ### Relative path
 
@@ -79,8 +77,8 @@ Starts from the current directory.
 
 Examples:
 
-- `backend/app/`
-- `./docs/`
+- `backend/app`
+- `./docs`
 
 ## Special paths
 
@@ -88,45 +86,32 @@ Examples:
 
 The root directory is the top-level [directory](#directory) of the file system.
 All other files and directories are contained within it.
-
 Its [absolute path](#absolute-path) is `/`.
 
 ### Home directory (`~`)
 
-Shortcut for the [absolute path](#absolute-path) for the [user](./operating-system.md#user) home [directory](#directory) `/home/<user>/`.
-
-See [`<user>`](./operating-system.md#user-placeholder).
-
-### Current directory (`.`)
-
-The [relative path](#relative-path) for the [directory](#directory) you are currently in.
-
-Examples:
-
-- For the directory [`wiki/`](../wiki), the current directory path is [`wiki/.`](../wiki/.).
+Shortcut for the [absolute path](#absolute-path) for the [user](./linux.md#users) home directory.
 
 ### Parent directory (`..`)
 
-The [relative path](#relative-path) for the parent directory of the [directory](#directory).
-The parent is always a directory.
+[Relative path](#relative-path) for the parent of the file or a directory.
 
 Examples:
 
-- For the directory [`wiki/images/`](../wiki/images), the parent directory path is [`wiki/images/..`](../wiki/images/..) which is [`wiki/`](../wiki).
+- For the file `parent/child/file.md`, the parent directory is `parent/child`.
+- For the directory `parent/child`, the parent directory is `parent`.
 
 ### `Desktop` directory
 
 The `Desktop` directory is the folder that corresponds to the desktop on your screen.
 
-`Windows`: `C:/Users/<username>/Desktop/`
-`Linux`: `~/Desktop/` (see [home directory (`~`)](#home-directory-))
-`macOS`: `~/Desktop/`
-`WSL`: `~/Desktop/`
+`Windows`: `C:\Users\<username>\Desktop`
+`Linux`: `~/Desktop` (see [home directory (`~`)](#home-directory-))
 
 ### `<directory-path>`
 
-The [path](#path) of a [directory](#directory) (without `<` and `>`).
+We use `<directory-path>` in docs to refer to the [path](#path) of a [directory](#directory).
 
 ### `<file-path>`
 
-The [path](#path) of a [file](#file) (without `<` and `>`).
+We use `<file-path>` in docs to refer to the [path](#path) of a [file](#file).

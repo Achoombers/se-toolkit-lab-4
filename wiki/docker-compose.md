@@ -3,118 +3,124 @@
 <h2>Table of contents</h2>
 
 - [What is `Docker Compose`](#what-is-docker-compose)
-- [`docker-compose.yml`](#docker-composeyml)
-- [Service](#service)
-  - [Service name](#service-name)
-- [`Docker Compose` networking](#docker-compose-networking)
-- [Volume](#volume)
-- [Health checks](#health-checks)
-- [Actions](#actions)
-  - [Stop and remove all containers](#stop-and-remove-all-containers)
-  - [Stop and remove all containers and volumes](#stop-and-remove-all-containers-and-volumes)
-  - [Stop and remove all containers, volumes, and images](#stop-and-remove-all-containers-volumes-and-images)
+- [Commands](#commands)
+  - [`docker compose up`](#docker-compose-up)
+  - [`docker compose up` a specific service](#docker-compose-up-a-specific-service)
+  - [`docker compose down`](#docker-compose-down)
+  - [`docker compose down` a specific service](#docker-compose-down-a-specific-service)
+  - [`docker compose ps`](#docker-compose-ps)
+  - [`docker compose logs`](#docker-compose-logs)
+  - [`docker compose logs` for a specific service](#docker-compose-logs-for-a-specific-service)
+  - [`docker compose -f`](#docker-compose--f)
+  - [`docker compose --env-file`](#docker-compose---env-file)
+  - [`docker compose down -v`](#docker-compose-down--v)
 
 ## What is `Docker Compose`
 
-`Docker Compose` runs multi-container apps from a [`docker-compose.yml`](#docker-composeyml) file.
+`Docker Compose` runs multi-container apps from a `docker-compose.yml` file.
 
 Example of the file: [`docker-compose.yml`](../docker-compose.yml).
 
 See also:
 
-- [`Docker`](./docker.md) for general `Docker` concepts ([images](./docker.md#image), [containers](./docker.md#container), etc.).
+- [`Docker`](./docker.md) for general `Docker` concepts ([images](./docker.md#image), [containers](./docker.md#container), [volumes](./docker.md#volumes), [health checks](./docker.md#health-checks), etc.).
 
-## `docker-compose.yml`
+## Commands
 
-## Service
+## `docker compose up`
 
-A service is a named entry under the `services:` key in [`docker-compose.yml`](#docker-composeyml). It defines how to build or pull an [image](./docker.md#image) and run it as a [container](./docker.md#container).
+Start services:
 
-For example, this project defines four services in [`docker-compose.yml`](../docker-compose.yml): `app`, `postgres`, `pgadmin`, and `caddy`.
-
-### Service name
-
-<!-- TODO -->
-
-## `Docker Compose` networking
-
-`Docker Compose` creates a [network](./computer-networks.md#what-is-a-network) where [services](#service) can reach each other by their [service name](#service-name).
-
-Docs:
-
-- [Networking in Compose](https://docs.docker.com/compose/how-tos/networking/)
-
-## Volume
-
-A volume is persistent storage managed by `Docker`. Data in a volume survives [container](./docker.md#container) restarts.
-
-Volumes are defined in [`docker-compose.yml`](#docker-composeyml):
-
-```yaml
-volumes:
-  postgres_data:
+```terminal
+docker compose up
 ```
 
-A [service](#service) can mount a volume to store data:
+Build images and start services:
 
-```yaml
-services:
-  postgres:
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+```terminal
+docker compose up --build
 ```
 
-## Health checks
+## `docker compose up` a specific service
 
-A health check is a command that `Docker` runs periodically to check if a [container](./docker.md#container) is healthy.
+Start a single service (and its dependencies):
 
-Other [services](#service) can wait for a container to be healthy before starting:
-
-```yaml
-services:
-  app:
-    depends_on:
-      postgres:
-        condition: service_healthy
-
-  postgres:
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
+```terminal
+docker compose up <service>
 ```
 
-## Actions
+Build and start a single service:
 
-<!-- TODO all - not globally -->
+```terminal
+docker compose up <service> --build
+```
 
-### Stop and remove all containers
+## `docker compose down`
 
-1. To stop all running [services](#service) and remove [containers](./docker.md#container),
+Stop and remove resources created by `up`:
 
-   [run in the `VS Code Terminal`](./vs-code.md#run-a-command-in-the-vs-code-terminal):
+```terminal
+docker compose down
+```
 
-   ```terminal
-   docker compose --env-file .env.docker.secret down
-   ```
+## `docker compose down` a specific service
 
-### Stop and remove all containers and volumes
+Stop and remove a single service:
 
-1. To stop all running [services](#service), remove [containers](./docker.md#container), and remove [volumes](#volume),
+```terminal
+docker compose down <service>
+```
 
-   [run in the `VS Code Terminal`](./vs-code.md#run-a-command-in-the-vs-code-terminal):
+## `docker compose ps`
 
-   ```terminal
-   docker compose --env-file .env.docker.secret down -v
-   ```
+List running containers:
 
-### Stop and remove all containers, volumes, and images
+```terminal
+docker compose ps
+```
 
-1. To stop all running [services](#service), remove [containers](./docker.md#container), remove [volumes](#volume), and remove [images](./docker.md#image),
+## `docker compose logs`
 
-   [run in the `VS Code Terminal`](./vs-code.md#run-a-command-in-the-vs-code-terminal):
+Show logs from all services:
 
-   ```terminal
-   docker compose --env-file .env.docker.secret down -v --rmi all
-   ```
+```terminal
+docker compose logs
+```
+
+## `docker compose logs` for a specific service
+
+Show logs for one service:
+
+```terminal
+docker compose logs <service>
+```
+
+## `docker compose -f`
+
+Use a specific compose file:
+
+```terminal
+docker compose -f <compose-file> up
+```
+
+## `docker compose --env-file`
+
+Load environment variables from a specific file:
+
+```terminal
+docker compose --env-file <env-file> up --build
+```
+
+This is useful when you need different settings for local/dev/test/prod environments.
+
+## `docker compose down -v`
+
+Stop services and remove volumes (including database data):
+
+```terminal
+docker compose down -v
+```
+
+> [!IMPORTANT]
+> The `-v` flag removes named volumes. This deletes all data stored in the database.
+> Use this when you want to reset the database to its initial state.

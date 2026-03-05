@@ -2,8 +2,7 @@
 
 from datetime import datetime
 
-from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.exc import IntegrityError
+from fastapi import APIRouter, Depends
 from sqlmodel.ext.asyncio.session import AsyncSession
 
 from app.database import get_session
@@ -28,11 +27,4 @@ async def post_learner(
     session: AsyncSession = Depends(get_session),
 ):
     """Create a new learner."""
-    try:
-        return await create_learner(session, name=body.name, email=body.email)
-    except IntegrityError as exc:
-        await session.rollback()
-        raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
-            detail=str(exc.orig),
-        )
+    return await create_learner(session, name=body.name, email=body.email)

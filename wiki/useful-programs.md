@@ -2,10 +2,6 @@
 
 <h2>Table of contents</h2>
 
-- [Browser](#browser)
-  - [`Chrome`](#chrome)
-  - [`Firefox`](#firefox)
-  - [`Safari`](#safari)
 - [`curl`](#curl)
   - [Send a `GET` request with `curl`](#send-a-get-request-with-curl)
   - [Common `curl` flags](#common-curl-flags)
@@ -22,22 +18,6 @@
 - [`ripgrep`](#ripgrep)
   - [Search text with `rg`](#search-text-with-rg)
   - [Common `rg` flags](#common-rg-flags)
-
-<!-- TODO mention supported platforms -->
-
-## Browser
-
-Browsers:
-
-- [`Chrome`](#chrome)
-- [`Firefox`](#firefox)
-- [`Safari`](#safari)
-
-### `Chrome`
-
-### `Firefox`
-
-### `Safari`
 
 ## `curl`
 
